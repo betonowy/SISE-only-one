@@ -6,6 +6,8 @@
 #define SISE_ASTR_H
 
 #include "strategy/strategy.h"
+#include "hamming.h"
+#include "manhattan.h"
 
 namespace sise {
 
@@ -16,7 +18,7 @@ namespace sise {
         bool solve(std::shared_ptr<board> board) override;
 
     private:
-
+        std::shared_ptr<heuristics> heuristic;
     };
 
 }

@@ -4,8 +4,6 @@
 
 #include "BFS.h"
 
-#include <utility>
-
 namespace sise {
 
     BFS::BFS(const std::string &arg) : pattern(arg) {}

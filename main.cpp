@@ -20,5 +20,7 @@ int main(int argc, char **argv) {
 
     solver.saveStats(arguments[5]);
 
+    std::unordered_map<std::string, bool> map;
+
     return 0;
 }

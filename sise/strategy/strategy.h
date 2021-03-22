@@ -23,7 +23,11 @@ namespace sise {
 
         static inline size_t getMaxRecursionDepth() { return sise::cfg::maxRecursionDepth; }
 
-    private:
+        void visitState(const std::shared_ptr<board> &state);
+
+        bool wasVisited(const std::shared_ptr<board> &state);
+
+    protected:
         std::unordered_map<std::string, bool> visitedStates;
 
         size_t nVisitedStates;

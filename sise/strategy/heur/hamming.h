@@ -10,7 +10,8 @@
 namespace sise {
 
     class hamming : public heuristics {
-
+    public:
+        int getDistance(board &candidate) override;
     };
 
 }

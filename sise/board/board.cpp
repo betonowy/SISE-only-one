@@ -6,6 +6,8 @@
 #include <headerConfig.h>
 #include <siseException.h>
 #include <util/fileIn.h>
+#include <iomanip>
+#include <iostream>
 
 namespace sise {
 
@@ -74,16 +76,16 @@ namespace sise {
 
         switch (dir) {
             case MOVE_UP:
-                if (cellToMove.first == 0) return false;
+                if (cellToMove.second == 0) return false;
                 break;
             case MOVE_RIGHT:
-                if (cellToMove.second == boardSizeX - 1) return false;
+                if (cellToMove.first == boardSizeX - 1) return false;
                 break;
             case MOVE_DOWN:
-                if (cellToMove.first == boardSizeY - 1) return false;
+                if (cellToMove.second == boardSizeY - 1) return false;
                 break;
             case MOVE_LEFT:
-                if (cellToMove.second == 0) return false;
+                if (cellToMove.first == 0) return false;
                 break;
         }
 
@@ -106,11 +108,6 @@ namespace sise {
 
         flatMatrix.resize(arraySize);
         indices.resize(arraySize);
-    }
-
-    template<class iterator>
-    void board::provideValues(iterator begin, iterator end) {
-        std::copy(begin, end, flatMatrix.begin());
     }
 
     void board::move(moveDirection dir) {
@@ -137,7 +134,7 @@ namespace sise {
         }
 
         std::swap(get(cellToMove), get(cellToSwapWith));
-        dirty = dirtyString = true;
+        makeDirty();
         countMove();
     }
 
@@ -170,6 +167,7 @@ namespace sise {
             case MOVE_LEFT:
                 return 'L';
         }
+        throw exception("Bad moveDirection enum value");
     }
 
     moveDirection board::charToMove(char character) {
@@ -184,6 +182,36 @@ namespace sise {
                 return MOVE_LEFT;
             default:
                 throw exception("This char cannot be converted to moveDirection enum");
+        }
+    }
+
+    void board::printBoard() {
+        for (size_t y = 0; y < boardSizeY; y++) {
+            for (size_t x = 0; x < boardSizeX; x++) {
+                std::cout << std::setw(5) << (int) get(x, y);
+            }
+            std::cout << std::endl;
+        }
+    }
+
+    void board::printPossibilities(const std::vector<moveDirection> &directions) {
+        for (auto &dir : directions) {
+            std::cout << "possible: ";
+            switch (dir) {
+                case MOVE_UP:
+                    std::cout << "up";
+                    break;
+                case MOVE_RIGHT:
+                    std::cout << "right";
+                    break;
+                case MOVE_DOWN:
+                    std::cout << "down";
+                    break;
+                case MOVE_LEFT:
+                    std::cout << "left";
+                    break;
+            }
+            std::cout << std::endl;
         }
     }
 

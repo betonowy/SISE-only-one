@@ -15,7 +15,9 @@ namespace sise {
     public:
         explicit hardPattern(const std::string &arg);
 
-        inline const auto &operator()() const { return pattern; }
+        inline const auto &operator[](size_t index) const { return pattern[index]; }
+
+        inline constexpr size_t size() { return pattern.size(); }
 
     private:
         std::array<moveDirection, 4> pattern{};

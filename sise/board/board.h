@@ -10,7 +10,6 @@
 #include <siseException.h>
 
 
-
 namespace sise {
 
     enum moveDirection {
@@ -38,6 +37,8 @@ namespace sise {
 
         inline std::pair<size_t, size_t> size() { return {boardSizeX, boardSizeY}; }
 
+        inline size_t maxNumber() { return flatMatrix.size() - 1; }
+
         // synchronising between two representations
 
         void sync();
@@ -58,11 +59,6 @@ namespace sise {
 
         inline void makeDirty() { dirty = dirtyString = true; }
 
-        // manual poke
-
-        template<class iterator>
-        void provideValues(iterator begin, iterator end);
-
         // save to file
 
         [[nodiscard]] inline size_t getMoves() const { return moves; }
@@ -74,6 +70,10 @@ namespace sise {
         static char moveToChar(moveDirection move);
 
         static moveDirection charToMove(char character);
+
+        void printBoard();
+
+        static void printPossibilities(const std::vector<moveDirection> &directions);
 
     private:
 

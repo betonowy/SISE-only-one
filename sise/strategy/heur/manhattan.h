@@ -9,7 +9,8 @@
 
 namespace sise {
     class manhattan : public heuristics {
-
+    public:
+        int getDistance(board &candidate) override;
     };
 
 }
