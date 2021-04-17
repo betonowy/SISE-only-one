@@ -18,6 +18,9 @@ namespace sise {
         bool solve(std::shared_ptr<board> board) override;
 
     private:
+
+        void SortToProcess();
+
         std::shared_ptr<heuristics> heuristic;
     };
 

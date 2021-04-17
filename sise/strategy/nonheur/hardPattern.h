@@ -19,6 +19,8 @@ namespace sise {
 
         inline constexpr size_t size() { return pattern.size(); }
 
+        inline const auto &operator()() const { return pattern; }
+
     private:
         std::array<moveDirection, 4> pattern{};
     };
