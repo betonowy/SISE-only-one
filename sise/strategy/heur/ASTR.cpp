@@ -50,7 +50,18 @@ namespace sise {
                 if (processedBoard.toString() == currentNode.first.toString()) {
                     alreadyProcessed = true;
 
-                    if (processedBoard.getMoves() > currentNode.first.getMoves()) processedNode = currentNode;
+                    if (processedBoard.getMoves() > currentNode.first.getMoves()) {
+                        processedNode = currentNode;
+                        // Disturbance in the node structure was introduced - need to fix this
+                        // trace processed (this never happens with A* algorithm)
+
+                        // for all processed and visited nodes -> test all available moves
+                        //     if node was already there
+                        //         and you got one that had less moves
+                        //             replace it with yours
+                        //             if this node was "processed node" -> trace deeper
+                        //             else if this node was "visited node" -> dont trace deeper
+                    }
                 }
             }
 
