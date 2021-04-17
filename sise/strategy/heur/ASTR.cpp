@@ -3,11 +3,10 @@
 //
 
 #include "ASTR.h"
+#include "../nonheur/hardPattern.h"
 
 #include <algorithm>
-#include <climits>
 #include <iostream>
-#include <list>
 
 namespace sise {
 
@@ -20,6 +19,8 @@ namespace sise {
     }
 
     bool ASTR::solve(std::shared_ptr<board> board) {
+        sise::hardPattern addPattern("LRUD");
+
         const auto boardSize = board->size();
         auto sketchBoard = *board;
 
@@ -28,9 +29,43 @@ namespace sise {
         toProcess.emplace_back(sketchBoard, heuristic->getDistance(sketchBoard));
 
         while (!toProcess.empty()) {
+            SortToProcess();
+            auto &currentNode = toProcess.back();
 
+            if (currentNode.first.isSolved()) {
+                *board = currentNode.first;
+                toProcess.clear();
+                processed.clear();
+                toProcess.shrink_to_fit();
+                processed.shrink_to_fit();
+                return true;
+            }
+
+            bool alreadyProcessed = false;
+
+            for (auto &processedNode : processed) {
+                if (processedNode.first.toString() == currentNode.first.toString()) {
+                    alreadyProcessed = true;
+                    if (processedNode.first.getMoves() > currentNode.first.getMoves()) {
+                        processedNode = currentNode;
+                    }
+                }
+            }
+
+            if (alreadyProcessed) toProcess.pop_back();
+
+            for (auto &direction : addPattern()) {
+                
+            }
         }
 
         return false;
+    }
+
+    void ASTR::SortToProcess() {
+        std::sort(toProcess.begin(), toProcess.end(),
+                  [&](const auto &a, const auto &b) {
+                      return a.second > b.second;
+                  });
     }
 }
