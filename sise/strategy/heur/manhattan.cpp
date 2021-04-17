@@ -19,6 +19,6 @@ namespace sise {
             distance += abs(coordA.second - coordB.second);
         }
 
-        return distance;
+        return distance + 2 * int(candidate.getMoves());
     }
 }

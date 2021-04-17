@@ -6,11 +6,7 @@
 
 namespace sise {
 
-    void strategy::visitState(const std::shared_ptr<board> &state) {
-        visitedStates[state->toString()] = true;
-    }
-
-    bool strategy::wasVisited(const std::shared_ptr<board> &state) {
-        return visitedStates[state->toString()];
+    bool strategy::visitState(board &state, int score) {
+        return false;
     }
 }

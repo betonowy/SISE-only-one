@@ -17,6 +17,6 @@ namespace sise {
             }
         }
 
-        return distance;
+        return distance + 2 * int(candidate.getMoves());
     }
 }

@@ -135,7 +135,7 @@ namespace sise {
 
         std::swap(get(cellToMove), get(cellToSwapWith));
         makeDirty();
-        countMove();
+        countMove(dir);
     }
 
     bool board::isSolved() {
@@ -213,6 +213,11 @@ namespace sise {
             }
             std::cout << std::endl;
         }
+    }
+
+    void board::countMove(moveDirection move) {
+        moves++;
+        moveSequence.push_back(move);
     }
 
 }
