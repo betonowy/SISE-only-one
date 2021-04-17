@@ -6,7 +6,6 @@
 #include "../nonheur/hardPattern.h"
 
 #include <algorithm>
-#include <iostream>
 
 namespace sise {
 
@@ -30,7 +29,9 @@ namespace sise {
 
         while (!toProcess.empty()) {
             SortToProcess();
-            auto &currentNode = toProcess.back();
+
+            auto currentNode = std::move(toProcess.back());
+            toProcess.pop_back();
 
             if (currentNode.first.isSolved()) {
                 *board = currentNode.first;
@@ -44,18 +45,31 @@ namespace sise {
             bool alreadyProcessed = false;
 
             for (auto &processedNode : processed) {
-                if (processedNode.first.toString() == currentNode.first.toString()) {
+                auto &processedBoard = processedNode.first;
+
+                if (processedBoard.toString() == currentNode.first.toString()) {
                     alreadyProcessed = true;
-                    if (processedNode.first.getMoves() > currentNode.first.getMoves()) {
-                        processedNode = currentNode;
-                    }
+
+                    if (processedBoard.getMoves() > currentNode.first.getMoves()) processedNode = currentNode;
                 }
             }
 
-            if (alreadyProcessed) toProcess.pop_back();
+            if (!alreadyProcessed) {
+                if (currentNode.first.getMoves() < sise::cfg::maxRecursionDepth) {
+                    for (auto &direction : addPattern()) {
+                        if (currentNode.first.canMove(direction)) {
+                            auto copiedNode = currentNode;
 
-            for (auto &direction : addPattern()) {
-                
+                            copiedNode.first.move(direction);
+                            copiedNode.second = heuristic->getDistance(copiedNode.first);
+                            nVisitedStates++;
+                            toProcess.push_back(copiedNode);
+                        }
+                    }
+                }
+
+                processed.push_back(std::move(currentNode));
+                nProcessedStates++;
             }
         }
 

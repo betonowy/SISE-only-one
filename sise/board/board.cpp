@@ -131,6 +131,10 @@ namespace sise {
             case MOVE_LEFT:
                 cellToSwapWith.first -= 1;
                 break;
+#ifdef SISE_FAILSAFE
+            default:
+                throw exception("Corrupt direction!");
+#endif
         }
 
         std::swap(get(cellToMove), get(cellToSwapWith));
@@ -138,7 +142,7 @@ namespace sise {
         countMove(dir);
     }
 
-    bool board::isSolved() {
+    bool board::isSolved() const {
         for (size_t i = 0; i < flatMatrix.size() - 1; i++)
             if (flatMatrix[i] != i + 1) return false;
 
