@@ -55,7 +55,7 @@ namespace sise {
                         // Disturbance in the node structure was introduced - need to fix this
                         // trace processed (this never happens with A* algorithm)
 
-                        // for all processed and visited nodes -> test all available moves
+                        // for all processed -> test all available moves
                         //     if node was already there
                         //         and you got one that had less moves
                         //             replace it with yours
