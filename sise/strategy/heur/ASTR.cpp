@@ -7,6 +7,7 @@
 
 #include <algorithm>
 
+
 namespace sise {
 
     ASTR::ASTR(const std::string &arg) {
@@ -14,7 +15,7 @@ namespace sise {
             heuristic = std::make_shared<manhattan>();
         } else if (arg == "hamm") {
             heuristic = std::make_shared<hamming>();
-        } else throw exception("Wrong heuristics argument");
+        } else Throw("Wrong heuristics argument");
     }
 
     bool ASTR::solve(std::shared_ptr<board> board) {
@@ -23,44 +24,40 @@ namespace sise {
         const auto boardSize = board->size();
         auto sketchBoard = *board;
 
+        const bool fastComparable = board->isFastComparable();
+
         heuristic->initSolved(boardSize.first, boardSize.second);
 
-        toProcess.emplace_back(sketchBoard, heuristic->getDistance(sketchBoard));
+        toProcessSet.emplace(sketchBoard, heuristic->getDistance(sketchBoard));
 
-        while (!toProcess.empty()) {
-            SortToProcess();
-
-            auto currentNode = std::move(toProcess.back());
-            toProcess.pop_back();
+        while (!toProcessSet.empty()) {
+            auto currentNode = toProcessSet.extract(*(--toProcessSet.rend())).value();
+            auto &currentBoard = currentNode.first;
 
             if (currentNode.first.isSolved()) {
                 *board = currentNode.first;
-                toProcess.clear();
+                toProcessSet.clear();
                 processed.clear();
-                toProcess.shrink_to_fit();
                 processed.shrink_to_fit();
                 return true;
             }
 
             bool alreadyProcessed = false;
 
-            for (auto &processedNode : processed) {
-                auto &processedBoard = processedNode.first;
-
-                if (processedBoard.toString() == currentNode.first.toString()) {
-                    alreadyProcessed = true;
-
-                    if (processedBoard.getMoves() > currentNode.first.getMoves()) {
-                        processedNode = currentNode;
-                        // Disturbance in the node structure was introduced - need to fix this
-                        // trace processed (this never happens with A* algorithm)
-
-                        // for all processed -> test all available moves
-                        //     if node was already there
-                        //         and you got one that had less moves
-                        //             replace it with yours
-                        //             if this node was "processed node" -> trace deeper
-                        //             else if this node was "visited node" -> dont trace deeper
+            if (fastComparable) {
+                for (auto &processedNode : processed) {
+                    auto &processedBoard = processedNode.first;
+                    if (board::FastBoardComp16(processedBoard, currentBoard)) {
+                        alreadyProcessed = true;
+                        Restructure(processedNode, currentNode);
+                    }
+                }
+            } else {
+                for (auto &processedNode : processed) {
+                    auto &processedBoard = processedNode.first;
+                    if (processedBoard == currentBoard) {
+                        alreadyProcessed = true;
+                        Restructure(processedNode, currentNode);
                     }
                 }
             }
@@ -74,7 +71,7 @@ namespace sise {
                             copiedNode.first.move(direction);
                             copiedNode.second = heuristic->getDistance(copiedNode.first);
                             nVisitedStates++;
-                            toProcess.push_back(copiedNode);
+                            toProcessSet.insert(copiedNode);
                         }
                     }
                 }
@@ -87,10 +84,19 @@ namespace sise {
         return false;
     }
 
-    void ASTR::SortToProcess() {
-        std::sort(toProcess.begin(), toProcess.end(),
-                  [&](const auto &a, const auto &b) {
-                      return a.second > b.second;
-                  });
+    void ASTR::Restructure(std::pair<board, int> &startNode, std::pair<board, int> &newNode) {
+        if (startNode.first.getMoves() > newNode.first.getMoves()) {
+            startNode = newNode;
+            Throw("Node structure fix was not yet implemented and it is needed");
+            // Disturbance in the node structure was introduced - need to fix this
+            // trace processed (this never happens with A* algorithm)
+
+            // for all processed -> test all available moves
+            //     if node was already there
+            //         and you got one that had less moves
+            //             replace it with yours
+            //             if this node was "processed node" -> trace deeper
+            //             else if this node was "visited node" -> don't trace deeper
+        }
     }
 }

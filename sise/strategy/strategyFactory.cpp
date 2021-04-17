@@ -14,7 +14,7 @@ namespace sise {
             return std::make_shared<ASTR>(arg2);
         }
 
-        throw exception("invalid strategy");
+        Throw("invalid strategy");
     }
 
 }

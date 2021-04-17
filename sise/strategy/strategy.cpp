@@ -5,8 +5,7 @@
 #include "strategy.h"
 
 namespace sise {
-
-    bool strategy::visitState(board &state, int score) {
-        return false;
+    bool NodeComparator::operator()(const std::pair<board, int> &a, const std::pair<board, int> &b) const {
+        return a.second < b.second;
     }
 }

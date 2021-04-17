@@ -10,8 +10,13 @@
 #include <memory>
 #include <list>
 #include <unordered_map>
+#include <set>
 
 namespace sise {
+
+    struct NodeComparator {
+        bool operator()(const std::pair<board, int> &a, const std::pair<board, int> &b) const;
+    };
 
     class strategy {
     public:
@@ -24,9 +29,8 @@ namespace sise {
 
         static inline size_t getMaxRecursionDepth() { return sise::cfg::maxRecursionDepth; }
 
-        bool visitState(board &state, int score);
-
     protected:
+        std::multiset<std::pair<board, int>, NodeComparator> toProcessSet;
         std::vector<std::pair<board, int>> toProcess;
         std::vector<std::pair<board, int>> processed;
 

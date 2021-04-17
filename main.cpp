@@ -6,7 +6,7 @@ int main(int argc, char **argv) {
     sise::arguments arguments(argc, argv);
 
     if (arguments.size() != 6)
-        throw sise::exception("invalid number of arguments: " + std::to_string(arguments.size()));
+        sise::Throw("invalid number of arguments: " + std::to_string(arguments.size()));
 
     auto strategy = sise::strategyFactory::get(arguments[1], arguments[2]);
 

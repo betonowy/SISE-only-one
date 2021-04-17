@@ -3,7 +3,7 @@ project(SISE)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS_DEBUG "-g -pipe -Wall -Wextra -Wpedantic -DSISE_FAILSAFE")
-set(CMAKE_CXX_FLAGS_RELEASE "-s -O3 -pipe -Wall -Wextra -Wpedantic")
+set(CMAKE_CXX_FLAGS_RELEASE "-s -O3 -pipe -Wall -Wextra -Wpedantic -fno-exceptions -DNO_EXCEPTIONS")
 
 file(GLOB_RECURSE SRCS sise/*.cpp)
 file(GLOB_RECURSE HDRS sise/*.h)

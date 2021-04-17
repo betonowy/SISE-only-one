@@ -10,6 +10,8 @@
 
 namespace sise {
 
+    void Throw(const std::string &reason);
+
     class exception : public std::exception {
     public:
         explicit exception(const std::string& reason);

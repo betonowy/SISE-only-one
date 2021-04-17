@@ -3,8 +3,18 @@
 //
 
 #include "siseException.h"
+#include <iostream>
 
 namespace sise {
+
+    void Throw(const std::string &reason) {
+#ifdef NO_EXCEPTIONS
+        std::cout << reason << std::endl;
+        std::abort();
+#else
+        throw exception(reason);
+#endif
+    }
 
     exception::exception(const std::string &reason) : exceptionString("SISE: " + reason) {}
 

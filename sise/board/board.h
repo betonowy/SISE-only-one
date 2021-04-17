@@ -8,7 +8,7 @@
 #include <vector>
 #include <cstdint>
 #include <siseException.h>
-
+#include <siseExtension.h>
 
 namespace sise {
 
@@ -24,6 +24,16 @@ namespace sise {
         board(size_t sizeX, size_t sizeY, bool autoSolve);
 
         explicit board(const std::string &path);
+
+        bool operator==(const board &other) const;
+
+        static inline bool FastBoardComp16(const board &a, const board &b) {
+            auto dataA = (const int128 *) a.flatMatrix.data();
+            auto dataB = (const int128 *) b.flatMatrix.data();
+            return dataA[0] == dataB[0];
+        }
+
+        bool isFastComparable();
 
         // getting values and indexes
 

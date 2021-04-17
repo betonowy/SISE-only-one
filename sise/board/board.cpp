@@ -104,7 +104,7 @@ namespace sise {
         size_t arraySize = boardSizeX * boardSizeY;
 
         if (arraySize == 0 || arraySize > sise::cfg::maxBoardSize)
-            throw sise::exception("Invalid array size: " + std::to_string(arraySize));
+            Throw("Invalid array size: " + std::to_string(arraySize));
 
         flatMatrix.resize(arraySize);
         indices.resize(arraySize);
@@ -171,7 +171,7 @@ namespace sise {
             case MOVE_LEFT:
                 return 'L';
         }
-        throw exception("Bad moveDirection enum value");
+        Throw("Bad moveDirection enum value");
     }
 
     moveDirection board::charToMove(char character) {
@@ -185,7 +185,7 @@ namespace sise {
             case 'L':
                 return MOVE_LEFT;
             default:
-                throw exception("This char cannot be converted to moveDirection enum");
+                Throw("This char cannot be converted to moveDirection enum");
         }
     }
 
@@ -222,6 +222,21 @@ namespace sise {
     void board::countMove(moveDirection move) {
         moves++;
         moveSequence.push_back(move);
+    }
+
+    bool board::operator==(const board &other) const {
+        size_t dataSize = flatMatrix.size();
+        auto dataA = flatMatrix.data();
+        auto dataB = other.flatMatrix.data();
+
+        for (size_t i = 0; i < dataSize; i++)
+            if (dataA[i] != dataB[i]) return false;
+
+        return true;
+    }
+
+    bool board::isFastComparable() {
+        return flatMatrix.size() == 16;
     }
 
 }
