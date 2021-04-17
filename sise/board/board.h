@@ -81,7 +81,7 @@ namespace sise {
 
         void init();
 
-        inline void countMove() { moves++; }
+        void countMove(moveDirection move);
 
         size_t moves = 0;
         std::vector<moveDirection> moveSequence;

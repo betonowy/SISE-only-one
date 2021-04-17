@@ -8,6 +8,7 @@
 #include <board/board.h>
 #include <headerConfig.h>
 #include <memory>
+#include <list>
 #include <unordered_map>
 
 namespace sise {
@@ -15,20 +16,19 @@ namespace sise {
     class strategy {
     public:
 
-        virtual bool solve(std::shared_ptr<board> board) = 0;
+        virtual bool solve(std::shared_ptr<board> boardToProcess) = 0;
 
-        inline size_t getProcessedStates() const { return nProcessedStates; }
+        [[nodiscard]] inline size_t getProcessedStates() const { return nProcessedStates; }
 
-        inline size_t getVisitedStates() const { return nVisitedStates; }
+        [[nodiscard]] inline size_t getVisitedStates() const { return nVisitedStates; }
 
         static inline size_t getMaxRecursionDepth() { return sise::cfg::maxRecursionDepth; }
 
-        void visitState(const std::shared_ptr<board> &state);
-
-        bool wasVisited(const std::shared_ptr<board> &state);
+        bool visitState(board &state, int score);
 
     protected:
-        std::unordered_map<std::string, bool> visitedStates;
+        std::vector<std::pair<board, int>> toProcess;
+        std::vector<std::pair<board, int>> processed;
 
         size_t nVisitedStates;
         size_t nProcessedStates;
