@@ -36,30 +36,14 @@ namespace sise {
 
             if (currentNode.first.isSolved()) {
                 *board = currentNode.first;
-                toProcessSet.clear();
-                processed.clear();
-                processed.shrink_to_fit();
                 return true;
             }
 
             bool alreadyProcessed = false;
 
-            if (fastComparable) {
-                for (auto &processedNode : processed) {
-                    auto &processedBoard = processedNode.first;
-                    if (board::FastBoardComp16(processedBoard, currentBoard)) {
-                        alreadyProcessed = true;
-                        Restructure(processedNode, currentNode);
-                    }
-                }
-            } else {
-                for (auto &processedNode : processed) {
-                    auto &processedBoard = processedNode.first;
-                    if (processedBoard == currentBoard) {
-                        alreadyProcessed = true;
-                        Restructure(processedNode, currentNode);
-                    }
-                }
+            if (processedMap.find(currentBoard) != processedMap.end()) {
+                alreadyProcessed = true;
+                Restructure(currentNode);
             }
 
             if (!alreadyProcessed) {
@@ -75,8 +59,7 @@ namespace sise {
                         }
                     }
                 }
-
-                processed.push_back(std::move(currentNode));
+                processedMap.insert(std::move(currentNode));
                 nProcessedStates++;
             }
         }
@@ -84,9 +67,10 @@ namespace sise {
         return false;
     }
 
-    void ASTR::Restructure(std::pair<board, int> &startNode, std::pair<board, int> &newNode) {
-        if (startNode.first.getMoves() > newNode.first.getMoves()) {
-            startNode = newNode;
+    void ASTR::Restructure(std::pair<board, int> &newNode) {
+        auto processedNode = processedMap.extract(newNode.first);
+        processedMap.insert(newNode);
+        if (processedNode.key().getMoves() > newNode.first.getMoves()) {
             Throw("Node structure fix was not yet implemented and it is needed");
             // Disturbance in the node structure was introduced - need to fix this
             // trace processed (this never happens with A* algorithm)

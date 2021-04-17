@@ -14,8 +14,16 @@
 
 namespace sise {
 
-    struct NodeComparator {
+    struct NodeLess {
         bool operator()(const std::pair<board, int> &a, const std::pair<board, int> &b) const;
+    };
+
+    struct NodeHasher {
+        size_t operator()(const board &a) const noexcept;
+    };
+
+    struct NodeEquals {
+        bool operator()(const board &a, const board &b) const;
     };
 
     class strategy {
@@ -30,8 +38,9 @@ namespace sise {
         static inline size_t getMaxRecursionDepth() { return sise::cfg::maxRecursionDepth; }
 
     protected:
-        std::multiset<std::pair<board, int>, NodeComparator> toProcessSet;
+        std::multiset<std::pair<board, int>, NodeLess> toProcessSet;
         std::vector<std::pair<board, int>> toProcess;
+        std::unordered_map<board, int, NodeHasher, NodeEquals> processedMap;
         std::vector<std::pair<board, int>> processed;
 
         size_t nVisitedStates;

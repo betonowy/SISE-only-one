@@ -19,7 +19,7 @@ namespace sise {
 
     private:
 
-        void Restructure(std::pair<board, int> &startNode, std::pair<board, int> &newNode);
+        void Restructure(std::pair<board, int> &newNode);
 
         std::shared_ptr<heuristics> heuristic;
     };

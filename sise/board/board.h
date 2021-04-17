@@ -33,11 +33,19 @@ namespace sise {
             return dataA[0] == dataB[0];
         }
 
-        bool isFastComparable();
+        [[nodiscard]] bool isFastComparable() const;
 
         // getting values and indexes
 
-        inline uint8_t &get(const std::pair<uint8_t, uint8_t> &coords) { return get(coords.first, coords.second); }
+        [[nodiscard]] inline const uint8_t &get(const std::pair<uint8_t, uint8_t> &coords) const {
+            return get(coords.first, coords.second);
+        }
+
+        inline uint8_t &get(const std::pair<uint8_t, uint8_t> &coords) {
+            return get(coords.first, coords.second);
+        }
+
+        [[nodiscard]] const uint8_t &get(size_t x, size_t y) const;
 
         uint8_t &get(size_t x, size_t y);
 
@@ -45,7 +53,7 @@ namespace sise {
 
         std::pair<uint8_t, uint8_t> getIndexOf(uint8_t cellValue);
 
-        inline std::pair<size_t, size_t> size() { return {boardSizeX, boardSizeY}; }
+        [[nodiscard]] inline std::pair<size_t, size_t> size() const { return {boardSizeX, boardSizeY}; }
 
         inline size_t maxNumber() { return flatMatrix.size() - 1; }
 

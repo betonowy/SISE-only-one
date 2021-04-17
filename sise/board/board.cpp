@@ -39,6 +39,18 @@ namespace sise {
         return flatMatrix[x + y * boardSizeY];
     }
 
+    const uint8_t & board::get(size_t x, size_t y) const {
+#ifdef SISE_FAILSAFE
+        if (x > boardSizeX || y > boardSizeY) {
+            throw sise::exception(
+                    "invalid indexes: [" + std::to_string(x) + ", " + std::to_string(y) + "], board size is: [" +
+                    std::to_string(boardSizeX) + ", " + std::to_string(boardSizeY) + "]");
+        }
+#endif
+
+        return flatMatrix[x + y * boardSizeY];
+    }
+
     std::pair<uint8_t, uint8_t> board::flatToDim(uint8_t index) const {
         return {index % boardSizeX, index / boardSizeX};
     }
@@ -235,7 +247,7 @@ namespace sise {
         return true;
     }
 
-    bool board::isFastComparable() {
+    bool board::isFastComparable() const {
         return flatMatrix.size() == 16;
     }
 
