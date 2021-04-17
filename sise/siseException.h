@@ -10,11 +10,11 @@
 
 namespace sise {
 
-    void Throw(const std::string &reason);
+    [[noreturn]] void Throw(const std::string &reason);
 
     class exception : public std::exception {
     public:
-        explicit exception(const std::string& reason);
+        explicit exception(const std::string &reason);
 
         [[nodiscard]] const char *what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override;
 

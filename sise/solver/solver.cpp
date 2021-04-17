@@ -29,7 +29,7 @@ namespace sise {
         fileOut file(path);
 
         if (boardToSolve->isSolved()) {
-            file.outInt(boardToSolve->getMoves());
+            file.outInt((int) boardToSolve->getMoves());
             file.newLine();
             file.outString(boardToSolve->movesToString());
         } else {
@@ -41,17 +41,17 @@ namespace sise {
         fileOut file(path);
 
         if (boardToSolve->isSolved()) {
-            file.outInt(boardToSolve->getMoves());
+            file.outInt((int) boardToSolve->getMoves());
         } else {
             file.outInt(-1);
         }
 
         file.newLine();
-        file.outInt(strat->getVisitedStates());
+        file.outInt((int) strat->getVisitedStates());
         file.newLine();
-        file.outInt(strat->getProcessedStates());
+        file.outInt((int) strat->getProcessedStates());
         file.newLine();
-        file.outInt(sise::strategy::getMaxRecursionDepth());
+        file.outInt((int) sise::strategy::getMaxRecursionDepth());
         file.newLine();
         file.outFloat(solveTime);
 

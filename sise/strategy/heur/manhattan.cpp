@@ -9,9 +9,9 @@ namespace sise {
     int manhattan::getDistance(board &candidate) {
         int distance = 0;
 
-        int maxNumber = candidate.maxNumber();
+        size_t maxNumber = candidate.maxNumber();
 
-        for (int n = 0; n < maxNumber; n++) {
+        for (size_t n = 0; n < maxNumber; n++) {
             auto coordA = candidate.getIndexOf(n);
             auto coordB = solved->getIndexOf(n);
 

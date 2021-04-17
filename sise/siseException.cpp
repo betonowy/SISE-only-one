@@ -3,7 +3,10 @@
 //
 
 #include "siseException.h"
+
+#ifdef NO_EXCEPTIONS
 #include <iostream>
+#endif
 
 namespace sise {
 

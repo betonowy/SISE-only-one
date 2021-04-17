@@ -24,8 +24,6 @@ namespace sise {
         const auto boardSize = board->size();
         auto sketchBoard = *board;
 
-        const bool fastComparable = board->isFastComparable();
-
         heuristic->initSolved(boardSize.first, boardSize.second);
 
         toProcessSet.emplace(sketchBoard, heuristic->getDistance(sketchBoard));

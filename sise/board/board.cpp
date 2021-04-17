@@ -39,7 +39,7 @@ namespace sise {
         return flatMatrix[x + y * boardSizeY];
     }
 
-    const uint8_t & board::get(size_t x, size_t y) const {
+    const uint8_t &board::get(size_t x, size_t y) const {
 #ifdef SISE_FAILSAFE
         if (x > boardSizeX || y > boardSizeY) {
             throw sise::exception(
@@ -74,7 +74,7 @@ namespace sise {
             serialized.clear();
 
             for (auto &cell : flatMatrix) {
-                serialized.push_back(cell);
+                serialized.push_back((char) cell);
             }
 
             dirtyString = false;
@@ -144,8 +144,8 @@ namespace sise {
                 cellToSwapWith.first -= 1;
                 break;
 #ifdef SISE_FAILSAFE
-            default:
-                throw exception("Corrupt direction!");
+                default:
+                    throw exception("Corrupt direction!");
 #endif
         }
 

@@ -15,8 +15,6 @@ namespace sise {
 
         virtual int getDistance(board &board) = 0;
 
-        void printScoreForMove(moveDirection move, int score);
-
     protected:
         std::unique_ptr<board> solved;
     };

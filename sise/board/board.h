@@ -81,7 +81,7 @@ namespace sise {
 
         [[nodiscard]] inline size_t getMoves() const { return moves; }
 
-        bool isSolved() const;
+        [[nodiscard]] bool isSolved() const;
 
         // move converter
 

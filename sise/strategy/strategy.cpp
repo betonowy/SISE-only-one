@@ -21,10 +21,9 @@ namespace sise {
     }
 
     bool NodeEquals::operator()(const board &a, const board &b) const {
-        if (a.isFastComparable()) {
+        if (a.isFastComparable())
             return board::FastBoardComp16(a, b);
-        } else {
-            return a == b;
-        }
+
+        return a == b;
     }
 }
