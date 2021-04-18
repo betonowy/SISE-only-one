@@ -24,10 +24,15 @@ namespace sise {
 
             bool alreadyProcessed = false;
 
-            if (processedMap.find(currentBoard) != processedMap.end()) {
-                alreadyProcessed = true;
-                Retrace(currentNode);
+            auto processedNode = processedMap.find(currentBoard);
+            if (processedNode != processedMap.end()) {
+                if(processedNode->first.getMoves() < currentNode.first.getMoves()) {
+                    alreadyProcessed = true;
+                    processedMap.erase(processedNode->first);
+                    processedMap.insert(currentNode);
+                }
             }
+
 
             if (!alreadyProcessed) {
                 if (currentNode.first.getMoves() < sise::cfg::maxRecursionDepth) {
