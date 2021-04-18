@@ -11,6 +11,7 @@
 #include <list>
 #include <unordered_map>
 #include <set>
+#include <deque>
 
 namespace sise {
 
@@ -37,9 +38,11 @@ namespace sise {
 
         static inline size_t getMaxRecursionDepth() { return sise::cfg::maxRecursionDepth; }
 
+        void Retrace(std::pair<board, int> &newNode);
+
     protected:
         std::multiset<std::pair<board, int>, NodeLess> toProcessSet;
-        std::vector<std::pair<board, int>> toProcess;
+        std::deque<std::pair<board, int>> toProcess;
         std::unordered_map<board, int, NodeHasher, NodeEquals> processedMap;
         std::vector<std::pair<board, int>> processed;
 
