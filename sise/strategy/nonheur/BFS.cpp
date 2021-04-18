@@ -26,7 +26,7 @@ namespace sise {
 
             if (processedMap.find(currentBoard) != processedMap.end()) {
                 alreadyProcessed = true;
-                Retrace(currentNode);
+                //Retrace(currentNode);
             }
 
             if (!alreadyProcessed) {
