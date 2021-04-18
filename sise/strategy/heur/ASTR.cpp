@@ -52,11 +52,13 @@ namespace sise {
 
                             copiedNode.first.move(direction);
                             copiedNode.second = heuristic->getDistance(copiedNode.first);
-                            nVisitedStates++;
+
                             toProcessSet.insert(copiedNode);
+                            nVisitedStates++;
                         }
                     }
                 }
+
                 processedMap.insert(std::move(currentNode));
                 nProcessedStates++;
             }
