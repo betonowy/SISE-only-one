@@ -19,7 +19,7 @@ namespace sise {
         bool operator()(const std::pair<board, int> &a, const std::pair<board, int> &b) const;
     };
 
-    struct NodeHasher {
+    struct NodeHash {
         size_t operator()(const board &a) const noexcept;
     };
 
@@ -36,18 +36,14 @@ namespace sise {
 
         [[nodiscard]] inline size_t getVisitedStates() const { return nVisitedStates; }
 
-        static inline size_t getMaxRecursionDepth() { return sise::cfg::maxRecursionDepth; }
-
-        void Retrace(std::pair<board, int> &newNode);
+        [[nodiscard]] inline size_t getMaxRecursionDepth() const { return maxRecursionDepth; }
 
     protected:
-        std::multiset<std::pair<board, int>, NodeLess> toProcessSet;
-        std::deque<std::pair<board, int>> toProcess;
-        std::unordered_map<board, int, NodeHasher, NodeEquals> processedMap;
-        std::vector<std::pair<board, int>> processed;
+        std::unordered_map<board, int, NodeHash, NodeEquals> processedMap;
 
-        size_t nVisitedStates;
-        size_t nProcessedStates;
+        size_t nVisitedStates = 0;
+        size_t nProcessedStates = 0;
+        size_t maxRecursionDepth = 0;
     };
 
 }

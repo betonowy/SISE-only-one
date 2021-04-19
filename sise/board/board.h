@@ -27,13 +27,19 @@ namespace sise {
 
         bool operator==(const board &other) const;
 
-        static inline bool FastBoardComp16(const board &a, const board &b) {
+        static inline bool FastComp16(const board &a, const board &b) {
             auto dataA = (const int128 *) a.flatMatrix.data();
             auto dataB = (const int128 *) b.flatMatrix.data();
             return dataA[0] == dataB[0];
         }
 
-        [[nodiscard]] bool isFastComparable() const;
+        [[nodiscard]] inline size_t FastHash16() const {
+            auto dataA = (const uint64_t *) &flatMatrix[0];
+            auto dataB = (const uint64_t *) &flatMatrix[8];
+            return *dataA ^ *dataB;
+        }
+
+        [[nodiscard]] inline bool FastComparable() const { return flatMatrix.size() == 16; };
 
         // getting values and indexes
 

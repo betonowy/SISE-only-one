@@ -10,26 +10,21 @@ namespace sise {
 
     bool BFS::solve(std::shared_ptr<board> board) {
         auto sketchBoard = *board;
-        toProcess.emplace_front(sketchBoard, 0);
+        toProcessQueue.emplace(sketchBoard, 0);
 
-        while (!toProcess.empty()) {
-            auto currentNode = toProcess.front();
-            toProcess.pop_front();
+        while (!toProcessQueue.empty()) {
+            auto currentNode = toProcessQueue.front();
+            toProcessQueue.pop();
             auto &currentBoard = currentNode.first;
+
+            maxRecursionDepth = std::max(maxRecursionDepth, currentBoard.getMoves());
 
             if (currentNode.first.isSolved()) {
                 *board = currentNode.first;
                 return true;
             }
 
-            bool alreadyProcessed = false;
-
-            if (processedMap.find(currentBoard) != processedMap.end()) {
-                alreadyProcessed = true;
-                //Retrace(currentNode);
-            }
-
-            if (!alreadyProcessed) {
+            if (processedMap.find(currentBoard) == processedMap.end()) {
                 if (currentNode.first.getMoves() < sise::cfg::maxRecursionDepth) {
                     for (auto &direction : pattern()) {
                         if (currentNode.first.canMove(direction)) {
@@ -37,7 +32,7 @@ namespace sise {
 
                             copiedNode.first.move(direction);
 
-                            toProcess.push_back(copiedNode);
+                            toProcessQueue.push(std::move(copiedNode));
                             nVisitedStates++;
                         }
                     }

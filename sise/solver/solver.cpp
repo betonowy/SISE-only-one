@@ -51,7 +51,7 @@ namespace sise {
         file.newLine();
         file.outInt((int) strat->getProcessedStates());
         file.newLine();
-        file.outInt((int) sise::strategy::getMaxRecursionDepth());
+        file.outInt((int) strat->getMaxRecursionDepth());
         file.newLine();
         file.outFloat(solveTime);
 

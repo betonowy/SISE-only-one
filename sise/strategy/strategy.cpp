@@ -10,7 +10,9 @@ namespace sise {
         return a.second < b.second;
     }
 
-    size_t NodeHasher::operator()(const board &a) const noexcept {
+    size_t NodeHash::operator()(const board &a) const noexcept {
+        if (a.FastComparable()) return a.FastHash16();
+
         auto size = a.size();
         size_t hash = 0;
 
@@ -22,47 +24,8 @@ namespace sise {
     }
 
     bool NodeEquals::operator()(const board &a, const board &b) const {
-        if (a.isFastComparable())
-            return board::FastBoardComp16(a, b);
+        if (a.FastComparable()) return board::FastComp16(a, b);
 
         return a == b;
-    }
-
-    void strategy::Retrace(std::pair<board, int> &newNode) {
-        sise::hardPattern pattern("LRUD");
-        for (auto &processedNode : processedMap) {
-            if (newNode.first == processedNode.first) {
-                processedMap.erase(processedNode.first);
-                processedMap.insert(newNode);
-                if (newNode.first.getMoves() < processedNode.first.getMoves()) {
-                    for (auto &direction : pattern()) {
-                        auto tracedNode = newNode;
-                        if (tracedNode.first.canMove(direction)) {
-                            tracedNode.first.move(direction);
-                            return Retrace(tracedNode);
-                        }
-                    }
-                } else
-                    break;
-            }
-        }
-        auto FindInDeck = [&](auto cos) {
-            auto iterator = toProcess.begin();
-            do {
-                if (cos == *iterator) break;
-            } while (++iterator != toProcess.end());
-            return iterator;
-        };
-        for (auto &notProcessedNode : toProcess) {
-            if (newNode.first == notProcessedNode.first) {
-                if(newNode.first.getMoves() < notProcessedNode.first.getMoves()) {
-                    auto iterator = FindInDeck(newNode);
-                    if (iterator != toProcess.end())
-                        *iterator = newNode;
-                }
-                else
-                    break;
-            }
-        }
     }
 }

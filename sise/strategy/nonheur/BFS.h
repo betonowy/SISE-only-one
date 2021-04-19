@@ -7,6 +7,7 @@
 
 #include "strategy/strategy.h"
 #include "hardPattern.h"
+#include <queue>
 
 namespace sise {
     class BFS : public strategy {
@@ -17,6 +18,8 @@ namespace sise {
 
     private:
         hardPattern pattern;
+
+        std::queue<std::pair<board, int>> toProcessQueue;
     };
 
 }

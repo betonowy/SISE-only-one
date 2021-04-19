@@ -7,6 +7,7 @@
 
 #include "strategy/strategy.h"
 #include "hardPattern.h"
+#include <stack>
 
 namespace sise {
     class DFS : public strategy {
@@ -17,6 +18,8 @@ namespace sise {
 
     private:
         hardPattern pattern;
+
+        std::stack<std::pair<board, int>> toProcessStack;
     };
 
 }

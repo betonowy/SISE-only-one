@@ -247,8 +247,4 @@ namespace sise {
         return true;
     }
 
-    bool board::isFastComparable() const {
-        return flatMatrix.size() == 16;
-    }
-
 }

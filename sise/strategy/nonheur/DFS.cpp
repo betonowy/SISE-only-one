@@ -10,12 +10,14 @@ namespace sise {
 
     bool DFS::solve(std::shared_ptr<board> board) {
         auto sketchBoard = *board;
-        toProcess.emplace_front(sketchBoard, 0);
+        toProcessStack.emplace(sketchBoard, 0);
 
-        while (!toProcess.empty()) {
-            auto currentNode = toProcess.front();
-            toProcess.pop_front();
+        while (!toProcessStack.empty()) {
+            auto currentNode = toProcessStack.top();
+            toProcessStack.pop();
             auto &currentBoard = currentNode.first;
+
+            maxRecursionDepth = std::max(maxRecursionDepth, currentBoard.getMoves());
 
             if (currentNode.first.isSolved()) {
                 *board = currentNode.first;
@@ -23,10 +25,10 @@ namespace sise {
             }
 
             bool alreadyProcessed = false;
-
             auto processedNode = processedMap.find(currentBoard);
+
             if (processedNode != processedMap.end()) {
-                if(processedNode->first.getMoves() < currentNode.first.getMoves()) {
+                if (processedNode->first.getMoves() < currentNode.first.getMoves()) {
                     alreadyProcessed = true;
                     processedMap.erase(processedNode->first);
                     processedMap.insert(currentNode);
@@ -42,7 +44,7 @@ namespace sise {
 
                             copiedNode.first.move(direction);
 
-                            toProcess.push_front(copiedNode);
+                            toProcessStack.push(std::move(copiedNode));
                             nVisitedStates++;
                         }
                     }
