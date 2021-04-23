@@ -6,18 +6,16 @@
 
 namespace sise {
 
-    DFS::DFS(const std::string &arg) : pattern(arg) {}
+    DFS::DFS(const std::string &arg) : strategy(arg) {}
 
     bool DFS::solve(std::shared_ptr<board> board) {
-        auto sketchBoard = *board;
-        toProcessStack.emplace(sketchBoard, 0);
+        toProcessStack.emplace(*board, 0);
 
         while (!toProcessStack.empty()) {
             auto currentNode = toProcessStack.top();
             toProcessStack.pop();
-            auto &currentBoard = currentNode.first;
 
-            maxRecursionDepth = std::max(maxRecursionDepth, currentBoard.getMoves());
+            maxRecursionDepth = std::max(maxRecursionDepth, currentNode.first.getMoves());
 
             if (currentNode.first.isSolved()) {
                 *board = currentNode.first;
@@ -25,16 +23,13 @@ namespace sise {
             }
 
             bool alreadyProcessed = false;
-            auto processedNode = processedMap.find(currentBoard);
+            auto processedNode = processedMap.find(currentNode.first);
 
-            if (processedNode != processedMap.end()) {
-                if (processedNode->first.getMoves() < currentNode.first.getMoves()) {
-                    alreadyProcessed = true;
-                    processedMap.erase(processedNode->first);
-                    processedMap.insert(currentNode);
-                }
+            if (processedNode != processedMap.end() && processedNode->first.getMoves() < currentNode.first.getMoves()) {
+                alreadyProcessed = true;
+                processedMap.erase(processedNode->first);
+                processedMap.insert(currentNode);
             }
-
 
             if (!alreadyProcessed) {
                 if (currentNode.first.getMoves() < sise::cfg::maxRecursionDepth) {

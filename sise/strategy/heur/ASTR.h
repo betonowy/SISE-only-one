@@ -19,8 +19,6 @@ namespace sise {
 
     private:
 
-        void Restructure(std::pair<board, int> &newNode);
-
         std::shared_ptr<heuristics> heuristic;
 
         std::multiset<std::pair<board, int>, NodeLess> toProcessSet;

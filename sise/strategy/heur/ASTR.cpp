@@ -3,42 +3,36 @@
 //
 
 #include "ASTR.h"
-#include "../nonheur/hardPattern.h"
+#include "strategy/hardPattern.h"
 
 #include <algorithm>
 
 
 namespace sise {
 
-    ASTR::ASTR(const std::string &arg) {
-        if (arg == "manh") {
-            heuristic = std::make_shared<manhattan>();
-        } else if (arg == "hamm") {
-            heuristic = std::make_shared<hamming>();
-        } else Throw("Wrong heuristics argument");
+    ASTR::ASTR(const std::string &arg) : strategy("LUDR") {
+        if (arg == "manh") heuristic = std::make_shared<manhattan>();
+        else if (arg == "hamm") heuristic = std::make_shared<hamming>();
+        else Throw("Wrong heuristics argument");
     }
 
     bool ASTR::solve(std::shared_ptr<board> board) {
-        sise::hardPattern addPattern("LRUD");
-
         const auto boardSize = board->size();
         heuristic->initSolved(boardSize.first, boardSize.second);
         toProcessSet.emplace(*board, heuristic->getDistance(*board));
 
         while (!toProcessSet.empty()) {
             auto currentNode = toProcessSet.extract(*(--toProcessSet.rend())).value();
-            auto &currentBoard = currentNode.first;
-
-            maxRecursionDepth = std::max(maxRecursionDepth, currentBoard.getMoves());
+            maxRecursionDepth = std::max(maxRecursionDepth, currentNode.first.getMoves());
 
             if (currentNode.first.isSolved()) {
                 *board = currentNode.first;
                 return true;
             }
 
-            if (processedMap.find(currentBoard) == processedMap.end()) {
+            if (processedMap.find(currentNode.first) == processedMap.end()) {
                 if (currentNode.first.getMoves() < sise::cfg::maxRecursionDepth) {
-                    for (auto &direction : addPattern()) {
+                    for (auto &direction : pattern()) {
                         if (currentNode.first.canMove(direction)) {
                             auto copiedNode = currentNode;
 

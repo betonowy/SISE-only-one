@@ -3,9 +3,11 @@
 //
 
 #include "strategy.h"
-#include "nonheur/hardPattern.h"
+#include "hardPattern.h"
 
 namespace sise {
+    strategy::strategy(const std::string &pat) : pattern(pat) {}
+
     bool NodeLess::operator()(const std::pair<board, int> &a, const std::pair<board, int> &b) const {
         return a.second < b.second;
     }

@@ -6,7 +6,6 @@
 #define SISE_BFS_H
 
 #include "strategy/strategy.h"
-#include "hardPattern.h"
 #include <queue>
 
 namespace sise {
@@ -17,8 +16,6 @@ namespace sise {
         bool solve(std::shared_ptr<board> board) override;
 
     private:
-        hardPattern pattern;
-
         std::queue<std::pair<board, int>> toProcessQueue;
     };
 

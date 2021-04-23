@@ -6,7 +6,6 @@
 #define SISE_DFS_H
 
 #include "strategy/strategy.h"
-#include "hardPattern.h"
 #include <stack>
 
 namespace sise {
@@ -17,8 +16,6 @@ namespace sise {
         bool solve(std::shared_ptr<board> board) override;
 
     private:
-        hardPattern pattern;
-
         std::stack<std::pair<board, int>> toProcessStack;
     };
 

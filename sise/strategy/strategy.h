@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include <set>
 #include <deque>
+#include "hardPattern.h"
 
 namespace sise {
 
@@ -29,6 +30,7 @@ namespace sise {
 
     class strategy {
     public:
+        explicit strategy(const std::string & pat);
 
         virtual bool solve(std::shared_ptr<board> boardToProcess) = 0;
 
@@ -40,6 +42,7 @@ namespace sise {
 
     protected:
         std::unordered_map<board, int, NodeHash, NodeEquals> processedMap;
+        hardPattern pattern;
 
         size_t nVisitedStates = 0;
         size_t nProcessedStates = 0;
