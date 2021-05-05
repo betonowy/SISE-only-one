@@ -21,8 +21,11 @@ namespace sise {
 
         inline const auto &operator()() const { return pattern; }
 
+        [[nodiscard]] inline const auto &Reversed() const { return reversePattern; }
+
     private:
         std::array<moveDirection, 4> pattern{};
+        std::array<moveDirection, 4> reversePattern{};
     };
 
 }
