@@ -9,7 +9,9 @@ namespace sise {
     hardPattern::hardPattern(const std::string &arg) {
         if (arg.size() != 4) Throw("pattern string is wrong");
 
-        for (size_t i = 0; i < pattern.size(); i++)
+        for (size_t i = 0; i < pattern.size(); i++) {
             pattern[i] = board::charToMove(arg[i]);
+            reversePattern[reversePattern.size() - i - 1] = pattern[i];
+        }
     }
 }

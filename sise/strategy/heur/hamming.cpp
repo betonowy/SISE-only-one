@@ -13,10 +13,12 @@ namespace sise {
 
         for (size_t x = 0; x < size.first; x++) {
             for (size_t y = 0; y < size.second; y++) {
-                if (candidate.get(x, y) != solved->get(x, y)) distance++;
+                auto &a = candidate.get(x, y);
+                auto &b = solved->get(x, y);
+                if ((a != b ) && (a != 0)) distance++;
             }
         }
 
-        return distance + 2 * int(candidate.getMoves());
+        return distance + int(candidate.getMoves());
     }
 }

@@ -11,7 +11,7 @@ namespace sise {
 
         size_t maxNumber = candidate.maxNumber();
 
-        for (size_t n = 0; n < maxNumber; n++) {
+        for (size_t n = 1; n < maxNumber; n++) {
             auto coordA = candidate.getIndexOf(n);
             auto coordB = solved->getIndexOf(n);
 
@@ -19,6 +19,6 @@ namespace sise {
             distance += abs(coordA.second - coordB.second);
         }
 
-        return distance + 2 * int(candidate.getMoves());
+        return distance + int(candidate.getMoves());
     }
 }

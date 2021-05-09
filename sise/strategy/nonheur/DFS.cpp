@@ -33,7 +33,7 @@ namespace sise {
 
             if (!alreadyProcessed) {
                 if (currentNode.first.getMoves() < sise::cfg::maxRecursionDepth) {
-                    for (auto &direction : pattern()) {
+                    for (auto &direction : pattern.Reversed()) { // stack workaround
                         if (currentNode.first.canMove(direction)) {
                             auto copiedNode = currentNode;
 
